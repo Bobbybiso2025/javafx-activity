@@ -1,74 +1,59 @@
 package aclcbukidnon.com.javafxactivity.controllers;
 
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
+
+import java.util.Optional;
 
 public class TodoController {
 
     @FXML
     private ListView<String> todoList;
 
+    // Called when the CREATE button is clicked
     @FXML
-    public void initialize(){
-        ObservableList<String> initialItems = FXCollections.observableArrayList();
-        initialItems.add("Remove Me");
+    private void onCreateClick() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Create Todo");
+        dialog.setHeaderText("Add a new To-Do item");
+        dialog.setContentText("Enter task:");
 
-        todoList.setItems(initialItems);
-        todoList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        todoList.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldVal, newVal) ->
-                {
-
-                    if (newVal != null){
-                        onTodoListItemClick(newVal);
-                    }
-                }
-
-        );
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(task -> {
+            if (!task.trim().isEmpty()) {
+                todoList.getItems().add(task.trim());
+            } else {
+                showAlert("Empty Task", "Please enter a valid task.");
+            }
+        });
     }
 
-
-    private void onTodoListItemClick(String value){
-
-        var dialog = new TextInputDialog(value);
-        dialog.setTitle("Update Todo");
-
-
-        var result = dialog.showAndWait();
-        result.ifPresent(text -> System.out.println(text));
+    // Called when the DELETE button is clicked
+    @FXML
+    private void onDeleteClick() {
+        String selectedItem = todoList.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            todoList.getItems().remove(selectedItem);
+        } else {
+            showAlert("No Selection", "Please select an item to delete.");
+        }
     }
 
-
-
+    // Optional: Called when editing starts on a ListView item
     @FXML
-    protected void onCreateClick(){
-        var dialog = new TextInputDialog("");
-        dialog.setTitle("Create New Todo");
-
-
-        var result = dialog.showAndWait();
-        result.ifPresent(text -> System.out.println(text));
+    private void onListEdit(MouseEvent event) {
+        // You can implement in-line editing logic here if needed
     }
 
-    @FXML
-    protected void onDeleteClick(){
-
-        var confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmation Dialog");
-        confirm.setHeaderText("Are you sure you want to delete this todo?");
-        confirm.setContentText("This action cannot be undone.");
-
-        var result = confirm.showAndWait();
-        if (result.isPresent()) {
-            result.get();
-        }// User clicked OK
-    }
-
-    @FXML
-    protected void onListEdit(){
-
+    // Utility method for showing alerts
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

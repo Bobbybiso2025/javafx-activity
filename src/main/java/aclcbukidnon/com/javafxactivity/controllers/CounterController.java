@@ -8,19 +8,24 @@ public class CounterController {
     @FXML
     private Label labelCount;
 
-    @FXML
-    protected void onPlusClick(){
-        var countText = labelCount.getText();
-        var countValue = Integer.parseInt(countText);
-        countValue++;
-        labelCount.setText(countValue + "");
-    }
+    private int count = 0;
+
 
     @FXML
-    protected void onMinusClick(){
-        var countText = labelCount.getText();
-        var countValue = Integer.parseInt(countText);
-        countValue--;
-        labelCount.setText(countValue + "");
+    protected void onMinusClick() {
+        count--;
+        updateLabel();
+    }
+
+
+    @FXML
+    protected void onPlusClick() {
+        count++;
+        updateLabel();
+    }
+
+
+    protected void updateLabel() {
+        labelCount.setText(String.valueOf(count));
     }
 }
