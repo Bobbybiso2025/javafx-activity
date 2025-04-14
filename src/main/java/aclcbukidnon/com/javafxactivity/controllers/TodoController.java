@@ -13,7 +13,7 @@ public class TodoController {
     @FXML
     private ListView<String> todoList;
 
-    // Called when the CREATE button is clicked
+
     @FXML
     private void onCreateClick() {
         TextInputDialog dialog = new TextInputDialog();
@@ -31,7 +31,6 @@ public class TodoController {
         });
     }
 
-    // Called when the DELETE button is clicked
     @FXML
     private void onDeleteClick() {
         String selectedItem = todoList.getSelectionModel().getSelectedItem();
@@ -42,13 +41,11 @@ public class TodoController {
         }
     }
 
-    // Optional: Called when editing starts on a ListView item
     @FXML
     private void onListEdit(MouseEvent event) {
-        // You can implement in-line editing logic here if needed
+
     }
 
-    // Utility method for showing alerts
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

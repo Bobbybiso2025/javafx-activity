@@ -40,7 +40,7 @@ public class CalculatorController {
             case "=":
                 calculate();
                 break;
-            default: // numbers and dot
+            default:
                 appendNumber(buttonText);
         }
     }
@@ -66,7 +66,7 @@ public class CalculatorController {
     }
 
     private void calculate() {
-        if (operator.isEmpty() || currentInput.length() == 0) return;
+        if (operator.isEmpty() || currentInput.isEmpty()) return;
 
         double secondOperand = Double.parseDouble(currentInput.toString());
         double result = 0;

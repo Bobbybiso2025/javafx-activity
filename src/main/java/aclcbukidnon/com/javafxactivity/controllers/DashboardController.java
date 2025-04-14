@@ -5,7 +5,6 @@ import aclcbukidnon.com.javafxactivity.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class DashboardController {
     private void loadPage(String fxml) {
 
         try {
-            var root = FXMLLoader.load(Main.class.getResource(fxml));
+            var root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(fxml)));
             assert rootPane != null;
             rootPane.setCenter((Node) root);
         } catch (IOException e) {

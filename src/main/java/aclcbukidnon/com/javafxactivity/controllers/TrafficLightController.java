@@ -26,20 +26,36 @@ public class TrafficLightController {
     @FXML
     private Circle goLight;
 
+    private Timeline timeline;
+
     @FXML
     public void initialize() {
-        // Setup and start the timeline
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(3), e -> onTimerChange())
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-
+        startTimerForCurrentColor();
         updateLights();
     }
 
-    public void onTimerChange() {
-        // Cycle through the traffic light colors
+    private void startTimerForCurrentColor() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+
+        Duration duration = switch (currentColor) {
+            case STOP, GO -> Duration.minutes(1);
+            default -> Duration.seconds(3);
+        };
+
+        timeline = new Timeline(
+                new KeyFrame(duration, e -> {
+                    changeToNextColor();
+                    updateLights();
+                    startTimerForCurrentColor();
+                })
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    private void changeToNextColor() {
         switch (currentColor) {
             case STOP:
                 currentColor = TrafficLightColor.HOLD;
@@ -51,8 +67,6 @@ public class TrafficLightController {
                 currentColor = TrafficLightColor.STOP;
                 break;
         }
-
-        updateLights();
     }
 
     private void updateLights() {
